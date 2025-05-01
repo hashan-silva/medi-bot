@@ -1,11 +1,15 @@
+import os
 from io import BytesIO
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import openai
 from fastapi.responses import StreamingResponse
 from reportlab.pdfgen import canvas
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -19,7 +23,7 @@ app.add_middleware(
 )
 
 # Set your OpenAI key
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # -----------------------------
 # Data Models
