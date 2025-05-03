@@ -1,13 +1,15 @@
 <div class="chat-container">
   <div class="messages" #scrollMe>
-    <mat-card *ngFor="let message of messages" [ngClass]="{'user': message.from === 'user', 'bot': message.from === 'bot'}">
+    <mat-card *ngFor="let message of messages"
+              [ngClass]="{'user': message.from === 'user', 'bot': message.from === 'bot'}">
       <div class="bubble">{{ message.text }}</div>
     </mat-card>
   </div>
 
   <div class="input-area">
-    <input [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
-    <button (click)="sendMessage()" [disabled]="!userInput.trim() || isDataComplete">Send</button>
+    <input [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type your message..."/>
+    <button (click)="sendMessage()" [disabled]="initialAnalysisDone && (!userInput.trim() || isDataComplete)">Send
+    </button>
     <!-- Add the new Generate Report button -->
     <button class="report-button" (click)="generateReport()" [disabled]="!isDataComplete">Generate Report</button>
   </div>

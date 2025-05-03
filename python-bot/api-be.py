@@ -2,15 +2,12 @@ import json
 import os
 from io import BytesIO
 
-from dotenv import load_dotenv
-from fastapi import FastAPI, Request
-from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
 import openai
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 from reportlab.pdfgen import canvas
-
-load_dotenv()
 
 app = FastAPI()
 
@@ -119,6 +116,6 @@ async def generate_pdf(patient: PatientData):
 # -----------------------------
 
 # Uncomment to run directly
-if __name__ == "__main__":
-     import uvicorn
-     uvicorn.run(app, host="0.0.0.0", port=8000)
+#if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
