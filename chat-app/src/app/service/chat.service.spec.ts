@@ -2,6 +2,9 @@ import {TestBed} from '@angular/core/testing';
 
 import {ChatService} from './chat.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {AppComponent} from '../app.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClient} from '@angular/common/http';
 
 describe('ChatService', () => {
   let service: ChatService;
@@ -11,7 +14,7 @@ describe('ChatService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ChatService]
+      providers: [ChatService, HttpClient]
     });
     service = TestBed.inject(ChatService)
     httpTestingController = TestBed.inject(HttpTestingController);
