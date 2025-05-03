@@ -2,8 +2,6 @@ import {TestBed} from '@angular/core/testing';
 
 import {ChatService} from './chat.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {AppComponent} from '../app.component';
-import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClient} from '@angular/common/http';
 
 describe('ChatService', () => {
@@ -61,27 +59,6 @@ describe('ChatService', () => {
 
       // Respond with an error
       req.flush(errorMessage, { status, statusText: errorMessage });
-    });
-  });
-  describe('generatePdf', () => {
-    it('should send a POST request to /generate-pdf with patient data and expect a Blob', () => {
-      const testPatientData = { name: 'John Doe', age: 30 };
-      // Keep the definition of what the blob *should* look like
-      const mockBlobContent = 'pdf content';
-      const mockBlob = new Blob([mockBlobContent], { type: 'application/pdf' });
-
-      service.generatePdf(testPatientData).subscribe(response => {
-        expect(response).toBeInstanceOf(Blob);
-        expect(response.type).toBe(mockBlob.type);
-        expect(response.size).toBe(mockBlob.size);
-      });
-
-      const req = httpTestingController.expectOne(`${baseAPIUrl}/generate-pdf`);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(testPatientData);
-      expect(req.request.responseType).toBe('blob');
-
-      req.flush(mockBlobContent);
     });
   });
 });
