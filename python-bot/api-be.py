@@ -1,3 +1,4 @@
+import json
 import os
 from io import BytesIO
 
@@ -79,7 +80,8 @@ async def analyze_input(msg: Message):
     )
 
     content = response.choices[0].message['content']
-    return eval(content)  # careful, content must be safe JSON. You could also use `json.loads(content)`.
+    print(content)
+    return json.loads(content)  # careful, content must be safe JSON. You could also use `json.loads(content)`.
 
 @app.post("/generate-pdf")
 async def generate_pdf(patient: PatientData):
