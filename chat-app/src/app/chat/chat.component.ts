@@ -29,13 +29,11 @@ export class ChatComponent {
   constructor(private chatService: ChatService) {}
 
   public sendMessage() {
-    console.log(this.userInput);
     if (!this.userInput.trim()) return;
 
     const currentUserInput = this.userInput; // Store input before clearing
     this.messages.push({ from: 'user', text: currentUserInput });
     this.userInput = ''; // Clear input immediately
-    console.log(this.initialAnalysisDone);
     if (!this.initialAnalysisDone) {
       // Analyze the first message
       this.chatService.analyzeMessage(currentUserInput).subscribe(response => {
