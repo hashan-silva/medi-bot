@@ -1,0 +1,19 @@
+<div class="login-wrapper">
+  <mat-card class="login-card">
+    <mat-card-title>Login to MediBot</mat-card-title>
+    <form>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email" name="email" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="password" name="password" type="password" required>
+      </mat-form-field>
+      <div *ngIf="errorMessage" class="error">
+        {{errorMessage}}
+      </div>
+      <button mat-raised-button color="primary" [disabled]="loading" (click)="login()" class="full-width">Login</button>
+    </form>
+  </mat-card>
+</div>

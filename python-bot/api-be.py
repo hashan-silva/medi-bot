@@ -2,12 +2,27 @@ import json
 import os
 from io import BytesIO
 
+import firebase_admin
 import openai
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from firebase_admin import credentials, auth
 from pydantic import BaseModel
 from reportlab.pdfgen import canvas
+
+cred = credentials.Certificate("medi-bot-9d7ff-firebase-adminsdk-fbsvc-51b19c802f.json")
+firebase_admin.initialize_app(cred)
+
+def verify_token(authorization: str = Header(...)):
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing Bearer token")
+    token = authorization.split(" ")[1]
+    try:
+        decoded = auth.verify_id_token(token)
+        return decoded
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid Firebase token")
 
 app = FastAPI()
 
@@ -23,12 +38,14 @@ app.add_middleware(
 # Set your OpenAI key
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
 # -----------------------------
 # Data Models
 # -----------------------------
 
 class Message(BaseModel):
     message: str
+
 
 class PatientData(BaseModel):
     personal_number: str
@@ -38,12 +55,13 @@ class PatientData(BaseModel):
     duration: str
     name: str = None  # optional
 
+
 # -----------------------------
 # Endpoints
 # -----------------------------
 
 @app.post("/analyze")
-async def analyze_input(msg: Message):
+async def analyze_input(msg: Message,user=Depends(verify_token)):
     prompt = f"""
     Analyze this patient input: "{msg.message}"
 
@@ -80,8 +98,9 @@ async def analyze_input(msg: Message):
     print(content)
     return json.loads(content)  # careful, content must be safe JSON. You could also use `json.loads(content)`.
 
+
 @app.post("/generate-pdf")
-async def generate_pdf(patient: PatientData):
+async def generate_pdf(patient: PatientData, user=Depends(verify_token)):
     buffer = BytesIO()
     p = canvas.Canvas(buffer)
 
@@ -116,6 +135,6 @@ async def generate_pdf(patient: PatientData):
 # -----------------------------
 
 # Uncomment to run directly
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 #     import uvicorn
 #     uvicorn.run(app, host="0.0.0.0", port=8000)
