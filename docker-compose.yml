@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   backend:
+    image: hashan0314/medi-bot-backend:latest
     build: ./python-bot
     ports:
       - "8000:8000"
@@ -11,6 +12,7 @@ services:
       - ./python-bot:/app
 
   frontend:
+    image: hashan0314/medi-bot-frontend:latest
     build: ./chat-app
     ports:
       - "4200:80"
