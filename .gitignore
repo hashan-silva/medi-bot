@@ -1,1 +1,5 @@
 /python-bot/api.key
+.idea
+chat-app/package-lock.json
+python-bot/medi-bot-9d7ff-firebase-adminsdk-fbsvc-51b19c802f.json
+python-bot/__pycache__/api-be.cpython-310.pyc
